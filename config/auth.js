@@ -8,7 +8,7 @@ var config ={
         'facebookAuth' : {
             'clientID'      : '132823070755229', // your App ID
             'clientSecret'  : 'f6d11784f5d32307cb099f0475d1ff14', // your App Secret
-            'callbackURL'   : 'https://whispering-ravine-12625.herokuapp.com/auth/facebook/callback'
+            'callbackURL'   : 'whispering-ravine-12625.herokuapp.com/auth/facebook/callback'
         },
 
         'twitterAuth' : {
