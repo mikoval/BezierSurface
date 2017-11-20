@@ -76,6 +76,9 @@ function onKeyDown(event){
     if(key == "4"){
         changeSurface(3);
     }
+    if(key == "0"){
+        replicate();
+    }
     if(key == "p"){
         togglePlaying();
     }

@@ -62,7 +62,6 @@ function updatePointsUI(){
 		var color = $(this).attr("color");
 		if(target == "all"){
 			
-			console.log(color);
 			if(color == "r"){
 				console.log("changing all colors");
 				$(".color-input.individual.r").val(val);

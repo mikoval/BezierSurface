@@ -32,6 +32,7 @@ function setFromGrid(obj, grid){
 	// faces are indexed using characters
 	var faceIndices = [ 'a', 'b', 'c', 'd' ];
 
+
 	for(var i = 0; i < vertices.length; i++ ){
 		var x = i%dim;
 		var y = Math.floor(i/dim)
@@ -152,4 +153,18 @@ function createGrid(width, height){
 		arr[i] = new Array(height);
 	}
 	return arr;
+}
+function serializePoints(){
+	var arr = [];
+	for(var i = 0; i < surfaces.length; i++){
+		arr.push(surfaces[i].getCurves());
+	}
+	return arr;
+}
+function replicate(){
+	for(var i =0 ; i < this.surfaces.length; i++){
+		var curves = currentSurface.getCurves();
+		curves = $.extend(true,{},curves);
+		surfaces[i].setCurves(curves);
+	}
 }

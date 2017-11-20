@@ -18,7 +18,6 @@ function surface(p1, p2, p3, p4){
 		this.curves.push(c);
 
 	}
-	console.log(this.curves);
 	this.show = function(){
 		var objs  = this.curves;
 		for(var i =0 ; i < objs.length; i++){
@@ -37,6 +36,19 @@ function surface(p1, p2, p3, p4){
 			arr = arr.concat(this.curves[i].objs)
 		}
 		return arr;
+	}
+	this.getCurves = function(){
+		var curves = [];
+		for(var i = 0; i < this.curves.length; i++){
+			curves.push(this.curves[i].points);
+		}
+		return curves;
+	}
+	this.setCurves = function(points){
+		for(var i = 0; i < this.curves.length; i++){
+			this.curves[i].points = points[i];
+			this.curves[i].resetPoints();
+		}
 	}
 }
 function curve(start, end){
@@ -77,6 +89,17 @@ function curve(start, end){
 		var objs  = this.objs;
 		for(var i =0 ; i < objs.length; i++){
 			objs[i].visible = false;
+		}
+	}
+	this.resetPoints = function(){
+		for(var i = 0; i < this.objs.length; i++){
+			var target = this.points[i];
+			this.objs[i].target = target;
+			this.objs[i].position.x = this.points[i].x;
+			this.objs[i].position.y	= this.points[i].y;
+			this.objs[i].position.z = this.points[i].z;
+			this.objs[i].material = new THREE.MeshPhongMaterial({color:new THREE.Color(target.r, target.g, target.b)})
+
 		}
 	}
 

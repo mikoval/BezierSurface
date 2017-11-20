@@ -5,19 +5,88 @@ body{margin:0px;}
 html, 
 body {
     height: 100%;
- 
+}
+#controls-wrapper{
+	position:absolute;
+	background-color:lightgray;
+    opacity: 0.7;
+    padding:20px;
+
+}
+.color-input{
+	width:30px;
+}
+.color-row{
+	margin-top:10px;
 }
 </style>
 
 <body>
-
+<div id = "controls-wrapper">
+<h3 style="text-align: center">Controls</h3>
+<div>Speed: <input type="range" min="1" max="100" value="50" class="slider" id="speed-control"></div>
+<div>Time Function: 
+<select id='time-function-control'>
+	<option value='cos'>Cosine</option>
+	<option value='modulo'>Modulo</option>
+</select>
+</div>
+<div id="points-wrapper"></div>
+</div>
 </body>
-
 <script src = "/jquery-3.2.1.min.js"></script>
+
+<script>
+data = <%- JSON.stringify(data) %>;
+var _id = data._id;
+data = data.data;
+
+timeFunction = undefined;
+points = undefined;
+
+if(data != undefined){
+	data = JSON.parse(data);
+	console.log("test");
+	points = data.points;
+	timeFunction = data.timeFunction;
+}
+console.log(points)
+</script>
+
 <script src = "/three.js"></script>
 <script src = "/objects.js"></script>
+<script src = "/ui.js"></script>
 <script src = "/util.js"></script>
 <script src = "/controls.js"></script>
 <script src = "/OrbitControls.js"></script>
 <script src = "/scene.js"></script>
+
+
+<script>
+function saveData(){
+	var points = serializePoints();
+	var data = {
+		points: points, 
+		timeFunction: timeFunction,
+	}
+	
+	var str = JSON.stringify(data);
+	var obj = {data:str, id:_id}
+	 $.ajax({
+        type:"POST",
+        url:"/edit", 
+        data:obj ,
+        success: function(data){
+  			console.log("saved");
+  			setTimeout(saveData, 1000);
+      
+        },
+        error: function(){
+          console.log("failed")
+        }
+      })
+	
+}
+saveData();
+</script>
 </html>

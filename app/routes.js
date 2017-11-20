@@ -181,12 +181,21 @@ module.exports = function(app, passport) {
 
             })
 
-        })
-
-        
-
-        
+        }) 
     });
+    app.post('/edit', isLoggedIn, function(req, res) {
+        var id = req.body.id;
+        var data = req.body.data;
+
+
+        Animation.update({_id: id}, {data:data}, {upsert: true},
+            function (err) {
+                if (err) throw err;
+                res.json({message: "success"});
+            }
+        );
+        
+    })
 
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {

@@ -16,7 +16,10 @@ function initScene(){
 	planeHeight = 10;
 	selected = [];
 	playing = false;
-	timeFunction = "cos"
+	if(timeFunction == undefined){
+		timeFunction = "cos"
+	}
+	
 	time = 0;
 	dt = 0.03;
 
@@ -103,8 +106,14 @@ function initScene(){
 
 	grid = arrayToGrid(plane.geometry.vertices);
 	
-	if(surfaces == undefined){
-		createSurfaces();
+	
+	createSurfaces();
+	
+	if(points != undefined){
+		for(var i = 0; i < surfaces.length; i++){
+			surfaces[i].setCurves(points[i]);
+		}
+		console.log(surfaces);
 	}
 	currentSurface = surfaces[0];
 	currentSurface.show();
