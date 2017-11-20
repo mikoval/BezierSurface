@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100165936-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-100165936-3');
+</script>
+
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+      .logout-btn{cursor:pointer;position:absolute; right:0px;top:0px; width:100px;height:100%; line-height:56px;background-color:lightgray; text-align:center; color:black}
+      .premium-btn{cursor:pointer;position:absolute; right:100px;top:0px; width:150px;height:100%; line-height:56px;background-color:gold; text-align:center; color:black}
+   
+
+      .logout-btn:hover{background-color:lightyellow}
+      .premium-btn:hover{background-color:GoldenRod }
+      .level-box{width:200px; height:200px; background-color:lightyellow; border:solid; border-radius: 10px; padding:10px; margin:20px; text-align: center; display: inline-block;}
+    </style>
+
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-collapse collapse">
+      <div style = "text-align:center"><h3>Bezier Surface</h3></div>
+    </div>
+    
+
+
+    <a>
+    <div class="logout-btn">
+      Logout
+    </div>
+    </a>
+</div>
+
+
+
+<body>
+
+<div class="container" style="padding-top:100px">
+<div><button type = "button" class = "new-level-btn" data-toggle="modal" data-target="#new-level-modal">Add New Level</button></div>
+
+<div id = "level-container">
+</div>
+
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="new-level-modal" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">New Surface</h4>
+      </div>
+      <div class="modal-body">
+        <div> Name: <input id = "level-name"/></div>
+        
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id = "create-surface-submit">Create Surface</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+<script>
+function createLevelWidgets(arr){
+
+  var str = "";
+  for(var i = 0; i < arr.length; i++){
+    console.log(arr[i])
+    str += "<div class=\"level-box\">"
+    
+    +"<h3>" + arr[i].name + "</h3>"
+    +"<span id='"+arr[i]._id+"' class='delete-level glyphicon glyphicon-trash'></span><br>"
+    +"<a href='/edit/"+ arr[i]._id +"'>edit</a> <br>"
+    +"<a href='/play/"+ arr[i]._id +"'>play</a>"
+    +"</div>";
+  }
+  $("#level-container").html(str);
+  bindDeleteLevel();
+}
+function bindDeleteLevel(){
+  $(".delete-level").on('click', function(){
+    var level = $(this).attr('id');
+    var data = {id:level};
+    $.ajax({
+      type:"DELETE",
+      url:"/home", 
+      data:data ,
+      success: function(data){
+        console.log(data);
+        createLevelWidgets(data);
+      },
+      error: function(){
+        console.log("failed")
+      }
+    })
+  })
+}
+
+
+$(".logout-btn").on("click", function(){
+  window.location = "/logout";
+})
+$(".premium-btn").on("click", function(){
+  window.location = "/register";
+})
+$("#create-surface-submit").on('click', function(){
+  var name = $("#level-name").val();
+
+  var obj = {name:name};
+  if(name == ""){return;}
+  $("#new-level-modal").modal('hide');
+  var data = obj;
+  $.ajax({
+    type:"POST",
+    url:"/home", 
+    data:data ,
+    success: function(data){
+      createLevelWidgets(data); 
+    },
+    error: function(){
+      console.log("failed")
+    }
+  })
+})
+
+var levels = <%- JSON.stringify(levels) %>;
+createLevelWidgets(levels);
+</script>
+
