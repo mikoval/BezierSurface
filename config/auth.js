@@ -6,9 +6,9 @@ var config ={
     production:{
 
         'facebookAuth' : {
-            'clientID'      : '505003096505926', // your App ID
-            'clientSecret'  : 'ac902660ef19e39875a25c264e94494a', // your App Secret
-            'callbackURL'   : 'http://www.puzzlemaster.org/auth/facebook/callback'
+            'clientID'      : '132823070755229', // your App ID
+            'clientSecret'  : 'f6d11784f5d32307cb099f0475d1ff14', // your App Secret
+            'callbackURL'   : 'https://whispering-ravine-12625.herokuapp.com/auth/facebook/callback'
         },
 
         'twitterAuth' : {
