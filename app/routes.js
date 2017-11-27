@@ -38,16 +38,43 @@ module.exports = function(app, passport) {
         
 
         animation.data = param.data;
+        var id  = param.id;
         animation.name = param.name;
         animation.created_by = req.user.id
 
-        console.log(param.data);
-        
-        animation.save(function(){
-            Animation.find({}, function(err, surfaces){
-                res.json(surfaces);
+        if(id != undefined){
+           
+
+
+            
+             Animation.findOne({_id: id}, function(err, data){
+                    animation.data = data.data
+                    console.log(data);
+
+                    animation.save(function(){
+                        Animation.find({}, function(err, surfaces){
+                            res.json(surfaces);
+                        });
+                    });
+
+                })
+
+            
+    
+        }
+        else{
+
+            animation.save(function(){
+                console.log("new data");
+                Animation.find({}, function(err, surfaces){
+                    res.json(surfaces);
+                });
             });
-        });
+
+        }
+
+        //console.log(param.data);
+        
         
      
         
@@ -176,6 +203,7 @@ module.exports = function(app, passport) {
 
         
          Animation.findOne({_id: req.params.id}, function(err, data){
+            
                 res.render('edit.ejs', {
                 data : data
 

@@ -76,7 +76,7 @@ function onKeyDown(event){
     if(key == "4"){
         changeSurface(3);
     }
-    if(key == "0"){
+    if(key == "\\"){
         replicate();
     }
     if(key == "p"){

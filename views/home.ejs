@@ -45,7 +45,7 @@
 <body>
 
 <div class="container" style="padding-top:100px">
-<div><button type = "button" class = "new-level-btn" data-toggle="modal" data-target="#new-level-modal">Add New Level</button></div>
+<div><button type = "button" class = "new-level-btn" data-toggle="modal">Add New Level</button></div>
 
 <div id = "level-container">
 </div>
@@ -77,22 +77,26 @@
 </html>
 <script>
 function createLevelWidgets(arr){
-
+  console.log(arr);
   var str = "";
   for(var i = 0; i < arr.length; i++){
+    if(arr[i]._id == undefined||arr[i].name == undefined){
+      continue;
+    }
     console.log(arr[i])
     str += "<div class=\"level-box\">"
     
     +"<h3>" + arr[i].name + "</h3>"
     +"<span id='"+arr[i]._id+"' class='delete-level glyphicon glyphicon-trash'></span><br>"
     +"<a href='/edit/"+ arr[i]._id +"'>edit</a> <br>"
-    +"<a href='/play/"+ arr[i]._id +"'>play</a>"
+    +"<a href='/play/"+ arr[i]._id +"'>play</a><br>"
+    +"<a class='copy' href='#' target='"+ arr[i]._id +"'>Copy</a>"
     +"</div>";
   }
   $("#level-container").html(str);
-  bindDeleteLevel();
+  bindClicks();
 }
-function bindDeleteLevel(){
+function bindClicks(){
   $(".delete-level").on('click', function(){
     var level = $(this).attr('id');
     var data = {id:level};
@@ -109,6 +113,12 @@ function bindDeleteLevel(){
       }
     })
   })
+  $(".copy").on('click', function(e){
+    e.preventDefault();
+    var target = $(this).attr("target");
+    copyid = target;
+    $("#new-level-modal").modal('show');
+  })
 }
 
 
@@ -118,10 +128,15 @@ $(".logout-btn").on("click", function(){
 $(".premium-btn").on("click", function(){
   window.location = "/register";
 })
+
 $("#create-surface-submit").on('click', function(){
   var name = $("#level-name").val();
 
+
   var obj = {name:name};
+  if(copyid != undefined){
+    obj.id = copyid;
+  }
   if(name == ""){return;}
   $("#new-level-modal").modal('hide');
   var data = obj;
@@ -137,8 +152,14 @@ $("#create-surface-submit").on('click', function(){
     }
   })
 })
+$(".new-level-btn").on("click", function(){
+  copyid = undefined;
+  $("#new-level-modal").modal('show');
+
+})
 
 var levels = <%- JSON.stringify(levels) %>;
+console.log(levels);
 createLevelWidgets(levels);
 </script>
 
