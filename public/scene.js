@@ -60,6 +60,8 @@ function initScene(){
 	plane = new THREE.Mesh(planeGeo, planeMat);
 	plane.material.side = THREE.DoubleSide;
 
+	plane.visible = true;
+
 	planeGeo2 = new THREE.PlaneGeometry( planeWidth*10, planeHeight * 10, 10, 10 );
 	planeMat2 = new THREE.MeshPhongMaterial({color:0xAADDDD });
 	plane2 = new THREE.Mesh(planeGeo2, planeMat2);
